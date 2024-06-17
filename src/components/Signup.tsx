@@ -12,7 +12,6 @@ const Signup: React.FC<SignupProps> = ({setPage}:SignupProps) => {
   }
   const handleSubmit = async(e: React.FormEvent) => {
 
-    console.log('Sign Up', { email, password });
     e.preventDefault();
 
     const { data, error } = await supabase.auth.signUp({
@@ -22,12 +21,10 @@ const Signup: React.FC<SignupProps> = ({setPage}:SignupProps) => {
 
     if( data?.user ) {
       toast.success("Signup successful");
-      console.log(data)
       setPage("signin");
     }
     if( error){
       toast.error(error.message);
-      console.log(error)
     }
   
   };

@@ -1,40 +1,43 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import { supabase } from '../api';
-type SigninProps = { setPage: (x: string) => void }
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { supabase } from "../api";
+type SigninProps = { setPage: (x: string) => void };
 
 const Signin: React.FC<SigninProps> = ({ setPage }: SigninProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const redirectToSignup = (): void => {
     setPage("signup");
-  }
+  };
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
-    })
+    });
 
-    if(data?.user) {
+    if (data?.user) {
       toast.success("signin successful");
-      console.log(data);
+      window?.ReactNativeWebView?.postMessage(JSON.stringify(data));
     }
-    if(error){
+    if (error) {
       toast.error(error.message);
-      console.log(error);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Sign In</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+          Sign In
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="email">Email</label>
+            <label className="block text-gray-700 mb-2" htmlFor="email">
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -45,7 +48,9 @@ const Signin: React.FC<SigninProps> = ({ setPage }: SigninProps) => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="password">Password</label>
+            <label className="block text-gray-700 mb-2" htmlFor="password">
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -63,8 +68,11 @@ const Signin: React.FC<SigninProps> = ({ setPage }: SigninProps) => {
           </button>
         </form>
         <p className="mt-4 text-center text-gray-600">
-          Don't have an account?{' '}
-          <span onClick={redirectToSignup} className="text-blue-500 hover:underline cursor-pointer">
+          Don't have an account?{" "}
+          <span
+            onClick={redirectToSignup}
+            className="text-blue-500 hover:underline cursor-pointer"
+          >
             Sign Up
           </span>
         </p>
